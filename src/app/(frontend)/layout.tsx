@@ -1,18 +1,46 @@
+import { Fraunces, Source_Sans_3 } from 'next/font/google'
 import React from 'react'
+
+import { Footer } from '@/components/Footer'
+import { Header } from '@/components/Header'
 import './styles.css'
 
+const display = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const body = Source_Sans_3({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  title: {
+    default: 'SHEbuilds',
+    template: '%s · SHEbuilds',
+  },
+  description:
+    'A digital business starter kit helping women in underprivileged and rural communities across India start, build and sustain small businesses.',
+  icons: {
+    icon: '/brand/logo.png',
+    apple: '/brand/logo.png',
+  },
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>
-        <main>{children}</main>
+        <div className="site-shell">
+          <Header />
+          <main className="site-main">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   )
