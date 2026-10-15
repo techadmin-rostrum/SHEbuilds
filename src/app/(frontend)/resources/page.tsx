@@ -12,24 +12,47 @@ export const metadata: Metadata = {
     'Starter kits, finance templates, branding resources and government loan schemes for women entrepreneurs.',
 }
 
-export default async function ResourcesPage() {
-  const payload = await getPayloadClient()
-  const { docs } = await payload.find({
-    collection: 'resources',
-    sort: 'order',
-    limit: 20,
-  })
+type ResourceCard = {
+  id: string
+  title: string
+  slug: string
+  category: string
+  summary: string
+  headerImage?: string | null
+}
 
-  const resources = docs.length
-    ? docs
-    : resourceMeta.map((item) => ({
-        id: item.slug,
-        title: item.title,
-        slug: item.slug,
-        category: item.category,
-        summary: item.summary,
-        headerImage: item.headerImage,
+const fallbackResources: ResourceCard[] = resourceMeta.map((item) => ({
+  id: item.slug,
+  title: item.title,
+  slug: item.slug,
+  category: item.category,
+  summary: item.summary,
+  headerImage: item.headerImage,
+}))
+
+export default async function ResourcesPage() {
+  let resources: ResourceCard[] = fallbackResources
+
+  try {
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'resources',
+      sort: 'order',
+      limit: 20,
+    })
+    if (docs.length) {
+      resources = docs.map((doc) => ({
+        id: String(doc.id),
+        title: doc.title,
+        slug: doc.slug,
+        category: doc.category,
+        summary: doc.summary,
+        headerImage: doc.headerImage,
       }))
+    }
+  } catch {
+    // Use static kit list when Payload/env is unavailable (e.g. production build).
+  }
 
   return (
     <div className="page-hero">

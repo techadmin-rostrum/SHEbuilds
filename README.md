@@ -2,7 +2,7 @@
 
 Digital business starter kit website for women entrepreneurs in underprivileged and rural communities across India.
 
-Built with **Next.js** and **Payload CMS 3** (SQLite).
+Built with **Next.js** and **Payload CMS 3** (MongoDB).
 
 ## Quick start
 
@@ -45,12 +45,23 @@ Change this password after first login.
 
 ## Environment
 
-Copy `.env.example` to `.env`:
+Copy `.env.example` to `.env` and fill in your MongoDB Atlas URI:
 
 ```bash
-DATABASE_URL=file:./data/shebuilds.db
+DATABASE_URL=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/shebuilds?retryWrites=true&w=majority
 PAYLOAD_SECRET=your-long-random-secret
 ```
+
+In Atlas, allow network access for your machine / Vercel (`0.0.0.0/0` if needed).
+
+### Production (Vercel / host)
+
+Set the same keys in the host’s environment settings:
+
+- `PAYLOAD_SECRET` — long random string (required)
+- `DATABASE_URL` — your MongoDB Atlas connection string
+
+Then redeploy. After first deploy, run seed (or create an admin user in Payload) against that database.
 
 ## Brand assets
 
