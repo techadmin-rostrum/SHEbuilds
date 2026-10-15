@@ -30,6 +30,11 @@ export const metadata = {
   },
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
